@@ -1,6 +1,7 @@
 """Parameterized DuckDB queries and filtered analytics assembly."""
 
 from dataclasses import dataclass
+from threading import Lock
 
 import duckdb
 import polars as pl
@@ -27,6 +28,21 @@ class _ScoredCohorts:
     bowling_rankings: pl.DataFrame
     batting_match_impacts: pl.DataFrame
     bowling_match_impacts: pl.DataFrame
+
+
+_scored_cohorts_cache: dict[tuple[object, ...], _ScoredCohorts] = {}
+_scored_cohorts_lock = Lock()
+_scored_cohorts_compute_lock = Lock()
+
+
+def _filter_cache_key(filters: AnalyticsFilters) -> tuple[object, ...]:
+    return (
+        filters.competition,
+        filters.innings,
+        filters.match_stage,
+        filters.min_high_pressure_balls,
+        filters.over,
+    )
 
 
 def _execute_frame(
@@ -111,7 +127,7 @@ def query_filter_options(
     }
 
 
-def _score_filtered_cohorts(
+def _compute_scored_cohorts(
     connection: duckdb.DuckDBPyConnection,
     filters: AnalyticsFilters,
 ) -> _ScoredCohorts:
@@ -134,13 +150,36 @@ def _score_filtered_cohorts(
     bowling_eligible = bowling_eligible.filter(
         pl.col("high_pressure_legal_balls") >= filters.min_high_pressure_balls
     )
-    return _ScoredCohorts(
+    scored = _ScoredCohorts(
         deliveries=deliveries,
         batting_rankings=build_batting_rankings(batting_eligible),
         bowling_rankings=build_bowling_rankings(bowling_eligible),
         batting_match_impacts=batting_impacts,
         bowling_match_impacts=bowling_impacts,
     )
+    return scored
+
+
+def _score_filtered_cohorts(
+    connection: duckdb.DuckDBPyConnection,
+    filters: AnalyticsFilters,
+) -> _ScoredCohorts:
+    """Return cached filtered cohorts while coalescing concurrent requests."""
+    cache_key = _filter_cache_key(filters)
+    with _scored_cohorts_lock:
+        cached = _scored_cohorts_cache.get(cache_key)
+    if cached is not None:
+        return cached
+
+    with _scored_cohorts_compute_lock:
+        with _scored_cohorts_lock:
+            cached = _scored_cohorts_cache.get(cache_key)
+        if cached is not None:
+            return cached
+        scored = _compute_scored_cohorts(connection, filters)
+        with _scored_cohorts_lock:
+            _scored_cohorts_cache[cache_key] = scored
+        return scored
 
 
 def query_leaderboard(
