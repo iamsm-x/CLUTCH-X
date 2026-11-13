@@ -190,6 +190,26 @@ def query_leaderboard(
     """Recompute a filtered Top-10 using the same baseline and rating pipeline."""
     if discipline not in {"batting", "bowling"}:
         raise ValueError(f"Unsupported leaderboard discipline: {discipline}")
+    if (
+        filters.competition == "ALL"
+        and filters.innings is None
+        and filters.match_stage == "ALL"
+        and filters.over is None
+    ):
+        table_name = (
+            "top10_batters"
+            if discipline == "batting"
+            else "top10_bowlers"
+        )
+        if filters.min_high_pressure_balls != 150:
+            table_name += f"_min_{filters.min_high_pressure_balls}"
+        try:
+            return _execute_frame(
+                connection,
+                f'SELECT * FROM "{table_name}" ORDER BY rank',
+            )
+        except duckdb.CatalogException:
+            pass
     scored = _score_filtered_cohorts(connection, filters)
     rankings = (
         scored.batting_rankings
