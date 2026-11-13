@@ -165,8 +165,20 @@ const API_BASE_URL = (
 async function getJson<T>(path: string): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${path}`);
   if (!response.ok) {
-    const body = (await response.json()) as { detail?: string };
-    throw new Error(body.detail ?? `API request failed (${response.status})`);
+    const contentType = response.headers.get("content-type") ?? "";
+    if (contentType.includes("application/json")) {
+      const body = (await response.json()) as { detail?: string };
+      throw new Error(body.detail ?? `API request failed (${response.status})`);
+    }
+    throw new Error(
+      `API request failed (${response.status}). Check that VITE_API_BASE_URL points to the FastAPI /api/v1 endpoint.`,
+    );
+  }
+  const contentType = response.headers.get("content-type") ?? "";
+  if (!contentType.includes("application/json")) {
+    throw new Error(
+      "The configured analytics URL returned HTML instead of JSON. Check VITE_API_BASE_URL and the backend deployment URL.",
+    );
   }
   return (await response.json()) as T;
 }
