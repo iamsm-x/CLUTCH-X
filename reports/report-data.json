@@ -1,0 +1,597 @@
+{
+  "title": "CLUTCH-X",
+  "subtitle": "A reproducible methodology for T20 pressure analytics",
+  "first_season": "2022",
+  "latest_season": "2026",
+  "delivery_count": 193875,
+  "match_count": 831,
+  "competition_count": 136,
+  "eligible_batters": 47,
+  "eligible_bowlers": 68,
+  "high_pressure_share": 0.16882011605415861,
+  "pressure_acceptance": true,
+  "pressure_audit": {
+    "high_pressure_share": 0.16882011605415861,
+    "high_pressure_wicket_rate": 0.0797739077299114,
+    "normal_wicket_rate": 0.048775947128362654,
+    "wicket_rate_p_value": 3.8024849978333906e-113,
+    "high_pressure_run_variance": 3.135231596694076,
+    "normal_run_variance": 2.9026567047841945,
+    "run_variance_p_value": 2.859622862697819e-07
+  },
+  "pressure_histogram": [
+    {
+      "label": "00-04",
+      "count": 114419,
+      "bar_width_pt": 150
+    },
+    {
+      "label": "05-09",
+      "count": 15082,
+      "bar_width_pt": 20
+    },
+    {
+      "label": "10-14",
+      "count": 7538,
+      "bar_width_pt": 10
+    },
+    {
+      "label": "15-19",
+      "count": 4221,
+      "bar_width_pt": 6
+    },
+    {
+      "label": "20-24",
+      "count": 2645,
+      "bar_width_pt": 3
+    },
+    {
+      "label": "25-29",
+      "count": 1792,
+      "bar_width_pt": 2
+    },
+    {
+      "label": "30-34",
+      "count": 6432,
+      "bar_width_pt": 8
+    },
+    {
+      "label": "35-39",
+      "count": 1153,
+      "bar_width_pt": 2
+    },
+    {
+      "label": "40-44",
+      "count": 889,
+      "bar_width_pt": 1
+    },
+    {
+      "label": "45-49",
+      "count": 5671,
+      "bar_width_pt": 7
+    },
+    {
+      "label": "50-54",
+      "count": 778,
+      "bar_width_pt": 1
+    },
+    {
+      "label": "55-59",
+      "count": 525,
+      "bar_width_pt": 1
+    },
+    {
+      "label": "60-64",
+      "count": 5330,
+      "bar_width_pt": 7
+    },
+    {
+      "label": "65-69",
+      "count": 563,
+      "bar_width_pt": 1
+    },
+    {
+      "label": "70-74",
+      "count": 3532,
+      "bar_width_pt": 5
+    },
+    {
+      "label": "75-79",
+      "count": 10199,
+      "bar_width_pt": 13
+    },
+    {
+      "label": "80-84",
+      "count": 1538,
+      "bar_width_pt": 2
+    },
+    {
+      "label": "85-89",
+      "count": 2454,
+      "bar_width_pt": 3
+    },
+    {
+      "label": "90-94",
+      "count": 7077,
+      "bar_width_pt": 9
+    },
+    {
+      "label": "95-99",
+      "count": 2037,
+      "bar_width_pt": 3
+    }
+  ],
+  "split_half": [
+    {
+      "discipline": "batting",
+      "rho": 0.19854301572617944,
+      "eligible_players": 47,
+      "target": 0.65,
+      "meets_target": false
+    },
+    {
+      "discipline": "bowling",
+      "rho": 0.3316791999083864,
+      "eligible_players": 68,
+      "target": 0.65,
+      "meets_target": false
+    }
+  ],
+  "rankings_meet_stability_target": false,
+  "batting": [
+    {
+      "rank": 1,
+      "player_id": 4703,
+      "player_name": "Rishabh Pant",
+      "high_pressure_balls_faced": 166,
+      "high_pressure_matches": 23,
+      "normal_strike_rate": 135.26119402985074,
+      "high_pressure_strike_rate": 193.97590361445782,
+      "strike_rate_delta": 58.71470958460708,
+      "prae_per_100": 42.43670920852932,
+      "positive_impact_rate": 0.6956521739130435,
+      "baseline_rating": 46.086956521739125,
+      "pressure_rating": 81.73913043478261,
+      "net_clutch_delta": 35.652173913043484,
+      "clutch_x_score": 75.82608695652175,
+      "reliability_weight": 0.5253164556962026
+    },
+    {
+      "rank": 2,
+      "player_id": 4708,
+      "player_name": "Rinku Singh",
+      "high_pressure_balls_faced": 472,
+      "high_pressure_matches": 52,
+      "normal_strike_rate": 128.57142857142858,
+      "high_pressure_strike_rate": 193.64406779661016,
+      "strike_rate_delta": 65.07263922518158,
+      "prae_per_100": 45.278923102083986,
+      "positive_impact_rate": 0.5769230769230769,
+      "baseline_rating": 37.826086956521735,
+      "pressure_rating": 83.42809364548495,
+      "net_clutch_delta": 45.602006688963215,
+      "clutch_x_score": 75.62416387959867,
+      "reliability_weight": 0.7588424437299035
+    },
+    {
+      "rank": 3,
+      "player_id": 8,
+      "player_name": "Mahendra Singh Dhoni",
+      "high_pressure_balls_faced": 279,
+      "high_pressure_matches": 41,
+      "normal_strike_rate": 88.04347826086956,
+      "high_pressure_strike_rate": 190.32258064516128,
+      "strike_rate_delta": 102.27910238429172,
+      "prae_per_100": 37.533042355194084,
+      "positive_impact_rate": 0.5609756097560976,
+      "baseline_rating": 1.7391304347826086,
+      "pressure_rating": 75.63096500530223,
+      "net_clutch_delta": 73.89183457051962,
+      "clutch_x_score": 74.55302226935314,
+      "reliability_weight": 0.6503496503496503
+    },
+    {
+      "rank": 4,
+      "player_id": 7446,
+      "player_name": "Abdul Samad",
+      "high_pressure_balls_faced": 199,
+      "high_pressure_matches": 26,
+      "normal_strike_rate": 129.33333333333334,
+      "high_pressure_strike_rate": 172.8643216080402,
+      "strike_rate_delta": 43.53098827470686,
+      "prae_per_100": 21.931456709158127,
+      "positive_impact_rate": 0.5769230769230769,
+      "baseline_rating": 33.47826086956522,
+      "pressure_rating": 80.71070234113712,
+      "net_clutch_delta": 47.2324414715719,
+      "clutch_x_score": 74.33340301003345,
+      "reliability_weight": 0.5702005730659025
+    },
+    {
+      "rank": 5,
+      "player_id": 6726,
+      "player_name": "Romario Shepherd",
+      "high_pressure_balls_faced": 396,
+      "high_pressure_matches": 52,
+      "normal_strike_rate": 128.52233676975945,
+      "high_pressure_strike_rate": 172.97979797979798,
+      "strike_rate_delta": 44.45746121003853,
+      "prae_per_100": 32.32776068015638,
+      "positive_impact_rate": 0.5769230769230769,
+      "baseline_rating": 27.391304347826086,
+      "pressure_rating": 77.123745819398,
+      "net_clutch_delta": 49.73244147157191,
+      "clutch_x_score": 72.67307692307693,
+      "reliability_weight": 0.7252747252747253
+    },
+    {
+      "rank": 6,
+      "player_id": 4773,
+      "player_name": "Jaker Ali Anik",
+      "high_pressure_balls_faced": 169,
+      "high_pressure_matches": 17,
+      "normal_strike_rate": 120.40816326530613,
+      "high_pressure_strike_rate": 149.7041420118343,
+      "strike_rate_delta": 29.295978746528178,
+      "prae_per_100": 14.153671017804445,
+      "positive_impact_rate": 0.5882352941176471,
+      "baseline_rating": 13.043478260869566,
+      "pressure_rating": 73.70204603580562,
+      "net_clutch_delta": 60.65856777493606,
+      "clutch_x_score": 72.38315217391305,
+      "reliability_weight": 0.5297805642633229
+    },
+    {
+      "rank": 7,
+      "player_id": 20702,
+      "player_name": "Tristan Stubbs",
+      "high_pressure_balls_faced": 320,
+      "high_pressure_matches": 34,
+      "normal_strike_rate": 135.4796320630749,
+      "high_pressure_strike_rate": 182.8125,
+      "strike_rate_delta": 47.33286793692511,
+      "prae_per_100": 39.52820182433216,
+      "positive_impact_rate": 0.47058823529411764,
+      "baseline_rating": 51.30434782608695,
+      "pressure_rating": 75.83120204603581,
+      "net_clutch_delta": 24.52685421994886,
+      "clutch_x_score": 66.68478260869566,
+      "reliability_weight": 0.6808510638297872
+    },
+    {
+      "rank": 8,
+      "player_id": 2436,
+      "player_name": "Dasun Shanaka",
+      "high_pressure_balls_faced": 237,
+      "high_pressure_matches": 34,
+      "normal_strike_rate": 120.11173184357541,
+      "high_pressure_strike_rate": 183.54430379746836,
+      "strike_rate_delta": 63.432571953892946,
+      "prae_per_100": 41.65348755859237,
+      "positive_impact_rate": 0.47058823529411764,
+      "baseline_rating": 10.869565217391305,
+      "pressure_rating": 67.78772378516625,
+      "net_clutch_delta": 56.918158567774945,
+      "clutch_x_score": 66.30978260869566,
+      "reliability_weight": 0.6124031007751938
+    },
+    {
+      "rank": 9,
+      "player_id": 6651,
+      "player_name": "Towhid Hridoy",
+      "high_pressure_balls_faced": 158,
+      "high_pressure_matches": 12,
+      "normal_strike_rate": 120.2842377260982,
+      "high_pressure_strike_rate": 153.16455696202533,
+      "strike_rate_delta": 32.88031923592713,
+      "prae_per_100": 17.72585584711332,
+      "positive_impact_rate": 0.5,
+      "baseline_rating": 19.565217391304348,
+      "pressure_rating": 68.47826086956522,
+      "net_clutch_delta": 48.913043478260875,
+      "clutch_x_score": 66.27717391304348,
+      "reliability_weight": 0.512987012987013
+    },
+    {
+      "rank": 10,
+      "player_id": 1699,
+      "player_name": "Suryakumar Yadav",
+      "high_pressure_balls_faced": 226,
+      "high_pressure_matches": 28,
+      "normal_strike_rate": 163.44255823134623,
+      "high_pressure_strike_rate": 198.23008849557522,
+      "strike_rate_delta": 34.78753026422899,
+      "prae_per_100": 52.18946590738938,
+      "positive_impact_rate": 0.5714285714285714,
+      "baseline_rating": 86.95652173913044,
+      "pressure_rating": 75.57453416149067,
+      "net_clutch_delta": -11.381987577639762,
+      "clutch_x_score": 64.07181677018633,
+      "reliability_weight": 0.601063829787234
+    }
+  ],
+  "bowling": [
+    {
+      "rank": 1,
+      "player_id": 3644,
+      "player_name": "Kuldeep Yadav",
+      "high_pressure_legal_balls": 221,
+      "high_pressure_matches": 33,
+      "normal_economy": 8.275251033668045,
+      "high_pressure_economy": 6.027149321266968,
+      "economy_delta": 2.248101712401077,
+      "prsae_per_over": 2.7480775896635166,
+      "high_pressure_dot_rate": 0.45701357466063347,
+      "high_pressure_wickets": 23,
+      "positive_impact_rate": 0.8787878787878788,
+      "baseline_rating": 59.701492537313435,
+      "pressure_rating": 95.06558118498417,
+      "net_clutch_delta": 35.364088647670734,
+      "clutch_x_score": 86.78233830845771,
+      "reliability_weight": 0.5956873315363881
+    },
+    {
+      "rank": 2,
+      "player_id": 8661,
+      "player_name": "Matheesha Pathirana",
+      "high_pressure_legal_balls": 365,
+      "high_pressure_matches": 34,
+      "normal_economy": 9.082138200782268,
+      "high_pressure_economy": 8.367123287671232,
+      "economy_delta": 0.7150149131110357,
+      "prsae_per_over": 2.2403359747768694,
+      "high_pressure_dot_rate": 0.36712328767123287,
+      "high_pressure_wickets": 40,
+      "positive_impact_rate": 0.6764705882352942,
+      "baseline_rating": 37.01492537313433,
+      "pressure_rating": 91.36742756804213,
+      "net_clutch_delta": 54.3525021949078,
+      "clutch_x_score": 83.07555970149254,
+      "reliability_weight": 0.7087378640776699
+    },
+    {
+      "rank": 3,
+      "player_id": 4265,
+      "player_name": "T Natarajan",
+      "high_pressure_legal_balls": 340,
+      "high_pressure_matches": 36,
+      "normal_economy": 9.9438202247191,
+      "high_pressure_economy": 9.0,
+      "economy_delta": 0.9438202247191008,
+      "prsae_per_over": 1.0092121801047211,
+      "high_pressure_dot_rate": 0.3235294117647059,
+      "high_pressure_wickets": 29,
+      "positive_impact_rate": 0.5555555555555556,
+      "baseline_rating": 4.776119402985074,
+      "pressure_rating": 84.56882255389718,
+      "net_clutch_delta": 79.7927031509121,
+      "clutch_x_score": 80.09805140961858,
+      "reliability_weight": 0.6938775510204082
+    },
+    {
+      "rank": 4,
+      "player_id": 4641,
+      "player_name": "Lungi Ngidi",
+      "high_pressure_legal_balls": 170,
+      "high_pressure_matches": 26,
+      "normal_economy": 8.966074313408724,
+      "high_pressure_economy": 8.858823529411765,
+      "economy_delta": 0.10725078399695853,
+      "prsae_per_over": 1.1319031980298715,
+      "high_pressure_dot_rate": 0.3764705882352941,
+      "high_pressure_wickets": 19,
+      "positive_impact_rate": 0.5769230769230769,
+      "baseline_rating": 37.91044776119403,
+      "pressure_rating": 83.33237657864524,
+      "net_clutch_delta": 45.42192881745121,
+      "clutch_x_score": 75.54900975889781,
+      "reliability_weight": 0.53125
+    },
+    {
+      "rank": 5,
+      "player_id": 781,
+      "player_name": "Sunil Narine",
+      "high_pressure_legal_balls": 186,
+      "high_pressure_matches": 18,
+      "normal_economy": 7.004464285714286,
+      "high_pressure_economy": 5.935483870967742,
+      "economy_delta": 1.0689804147465436,
+      "prsae_per_over": 3.078783107794564,
+      "high_pressure_dot_rate": 0.43548387096774194,
+      "high_pressure_wickets": 11,
+      "positive_impact_rate": 0.8888888888888888,
+      "baseline_rating": 68.95522388059702,
+      "pressure_rating": 79.36981757877281,
+      "net_clutch_delta": 10.414593698175793,
+      "clutch_x_score": 75.2330016583748,
+      "reliability_weight": 0.5535714285714286
+    },
+    {
+      "rank": 6,
+      "player_id": 1612,
+      "player_name": "Yuzvendra Chahal",
+      "high_pressure_legal_balls": 240,
+      "high_pressure_matches": 36,
+      "normal_economy": 8.690200210748156,
+      "high_pressure_economy": 8.05,
+      "economy_delta": 0.640200210748155,
+      "prsae_per_over": 1.425653822619474,
+      "high_pressure_dot_rate": 0.3333333333333333,
+      "high_pressure_wickets": 21,
+      "positive_impact_rate": 0.6944444444444444,
+      "baseline_rating": 42.38805970149254,
+      "pressure_rating": 80.11401326699834,
+      "net_clutch_delta": 37.725953565505804,
+      "clutch_x_score": 75.1673403814262,
+      "reliability_weight": 0.6153846153846154
+    },
+    {
+      "rank": 7,
+      "player_id": 2526,
+      "player_name": "Ish Sodhi",
+      "high_pressure_legal_balls": 150,
+      "high_pressure_matches": 18,
+      "normal_economy": 8.733658536585367,
+      "high_pressure_economy": 7.44,
+      "economy_delta": 1.2936585365853661,
+      "prsae_per_over": 0.7821141273592156,
+      "high_pressure_dot_rate": 0.43333333333333335,
+      "high_pressure_wickets": 11,
+      "positive_impact_rate": 0.6666666666666666,
+      "baseline_rating": 37.01492537313433,
+      "pressure_rating": 79.15422885572139,
+      "net_clutch_delta": 42.13930348258705,
+      "clutch_x_score": 74.63557213930348,
+      "reliability_weight": 0.5
+    },
+    {
+      "rank": 8,
+      "player_id": 6355,
+      "player_name": "Shaheen Afridi",
+      "high_pressure_legal_balls": 180,
+      "high_pressure_matches": 28,
+      "normal_economy": 8.168316831683168,
+      "high_pressure_economy": 7.4,
+      "economy_delta": 0.7683168316831672,
+      "prsae_per_over": 2.170769414663935,
+      "high_pressure_dot_rate": 0.3611111111111111,
+      "high_pressure_wickets": 18,
+      "positive_impact_rate": 0.7142857142857143,
+      "baseline_rating": 77.91044776119402,
+      "pressure_rating": 78.94456289978679,
+      "net_clutch_delta": 1.0341151385927674,
+      "clutch_x_score": 70.33448827292112,
+      "reliability_weight": 0.5454545454545454
+    },
+    {
+      "rank": 9,
+      "player_id": 8380,
+      "player_name": "Mohammad Rishad Hossain",
+      "high_pressure_legal_balls": 175,
+      "high_pressure_matches": 18,
+      "normal_economy": 8.697508896797153,
+      "high_pressure_economy": 7.474285714285714,
+      "economy_delta": 1.2232231825114388,
+      "prsae_per_over": 0.8475890710127277,
+      "high_pressure_dot_rate": 0.3485714285714286,
+      "high_pressure_wickets": 11,
+      "positive_impact_rate": 0.6111111111111112,
+      "baseline_rating": 50.44776119402985,
+      "pressure_rating": 75.96600331674958,
+      "net_clutch_delta": 25.518242122719727,
+      "clutch_x_score": 69.69330431177447,
+      "reliability_weight": 0.5384615384615384
+    },
+    {
+      "rank": 10,
+      "player_id": 29888,
+      "player_name": "Harshit Rana",
+      "high_pressure_legal_balls": 168,
+      "high_pressure_matches": 23,
+      "normal_economy": 9.601637107776263,
+      "high_pressure_economy": 9.428571428571429,
+      "economy_delta": 0.17306567920483396,
+      "prsae_per_over": 0.46145829597707955,
+      "high_pressure_dot_rate": 0.38095238095238093,
+      "high_pressure_wickets": 13,
+      "positive_impact_rate": 0.6956521739130435,
+      "baseline_rating": 38.80597014925373,
+      "pressure_rating": 70.86632057105776,
+      "net_clutch_delta": 32.060350421804024,
+      "clutch_x_score": 69.39706359506815,
+      "reliability_weight": 0.5283018867924528
+    }
+  ],
+  "batting_exposure": [
+    {
+      "competition_type": "IPL",
+      "innings": 1,
+      "represented_players": 8,
+      "high_pressure_volume": 977
+    },
+    {
+      "competition_type": "IPL",
+      "innings": 2,
+      "represented_players": 8,
+      "high_pressure_volume": 380
+    },
+    {
+      "competition_type": "T20I",
+      "innings": 1,
+      "represented_players": 8,
+      "high_pressure_volume": 960
+    },
+    {
+      "competition_type": "T20I",
+      "innings": 2,
+      "represented_players": 6,
+      "high_pressure_volume": 305
+    }
+  ],
+  "bowling_exposure": [
+    {
+      "competition_type": "IPL",
+      "innings": 1,
+      "represented_players": 7,
+      "high_pressure_volume": 1000
+    },
+    {
+      "competition_type": "IPL",
+      "innings": 2,
+      "represented_players": 7,
+      "high_pressure_volume": 322
+    },
+    {
+      "competition_type": "T20I",
+      "innings": 1,
+      "represented_players": 8,
+      "high_pressure_volume": 655
+    },
+    {
+      "competition_type": "T20I",
+      "innings": 2,
+      "represented_players": 8,
+      "high_pressure_volume": 218
+    }
+  ],
+  "source_files": [
+    {
+      "name": "ball_by_ball.csv",
+      "sha256": "01e2b4379edfbab6a6e456d304cb3c70f554cb312ef93d9588f3f32a82cb396e"
+    },
+    {
+      "name": "matches.csv",
+      "sha256": "bb100ab84b8b9a15160c1f2315cf675210131a30e779ec5079fd5403dcf56eef"
+    },
+    {
+      "name": "competitions.csv",
+      "sha256": "507ceb7189f972d4e4f299ddcfc97f3c3247af1913f6291106f161fa8353fd9b"
+    },
+    {
+      "name": "playing_eleven.csv",
+      "sha256": "7517c73722a28d5d61c808ccf0cbed315a8780586d02e946eb9a7f5daf011c27"
+    },
+    {
+      "name": "teams.csv",
+      "sha256": "a65e5922a9b3bf49247b24fc9471782e700efb31f8dcc5042923238b87c50a5d"
+    },
+    {
+      "name": "competition_team_player_mapping.csv",
+      "sha256": "1ded4e42a933618572d6e2c3a521c3257eb1844fab4456d567d77cbb2d3bbb12"
+    }
+  ],
+  "artifact_hashes": [
+    {
+      "name": "top10_batters.parquet",
+      "sha256": "51be20d124eb773be67c65bd0d75b22acf2ebe04758147e37da40140f1e22b1d"
+    },
+    {
+      "name": "top10_bowlers.parquet",
+      "sha256": "9749c09afd240f407a171a6202f87d63c8c6b611195b53a41e78d17e6340298c"
+    },
+    {
+      "name": "ranking_audit_summary.parquet",
+      "sha256": "eaee7dc98f7cc77795c15928f70c82adb70275d28163b75a0adf85910d6e1205"
+    }
+  ]
+}

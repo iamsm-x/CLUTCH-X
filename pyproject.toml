@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clutch-x"
+version = "0.1.0"
+description = "Reproducible T20 cricket pressure analytics"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "duckdb>=1.1,<2",
+  "fastapi>=0.115,<1",
+  "numpy>=2.0,<3",
+  "orjson>=3.10,<4",
+  "polars>=1.20,<2",
+  "pydantic>=2.10,<3",
+  "scipy>=1.14,<2",
+  "uvicorn[standard]>=0.34,<1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9"]
+
+[tool.setuptools.packages.find]
+where = ["engine"]
+
+[tool.setuptools.package-data]
+"clutch_x.report" = ["*.typ"]
+
+[tool.pytest.ini_options]
+testpaths = ["engine/tests"]
+pythonpath = ["engine"]

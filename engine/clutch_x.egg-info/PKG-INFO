@@ -1,0 +1,207 @@
+Metadata-Version: 2.4
+Name: clutch-x
+Version: 0.1.0
+Summary: Reproducible T20 cricket pressure analytics
+Requires-Python: <3.14,>=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: duckdb<2,>=1.1
+Requires-Dist: fastapi<1,>=0.115
+Requires-Dist: numpy<3,>=2.0
+Requires-Dist: orjson<4,>=3.10
+Requires-Dist: polars<2,>=1.20
+Requires-Dist: pydantic<3,>=2.10
+Requires-Dist: scipy<2,>=1.14
+Requires-Dist: uvicorn[standard]<1,>=0.34
+Provides-Extra: dev
+Requires-Dist: pytest<9,>=8; extra == "dev"
+
+# CLUTCH-X
+
+CLUTCH-X analyzes delivery-level T20 match data to identify reliable batting and
+bowling performances under pressure. The project is organized as a Python
+analytics engine, a React dashboard, and a reproducible report generator.
+
+## Data
+
+Place the six source CSVs in `Data Pack/` (or provide another directory with
+`--data-dir`):
+
+- `ball_by_ball.csv`
+- `matches.csv`
+- `competitions.csv`
+- `playing_eleven.csv`
+- `teams.csv`
+- `competition_team_player_mapping.csv`
+
+The supplied pack has 200,999 deliveries, 883 matches, and competition records
+from 2022 through 2026. Its `T20` format includes IPL and non-IPL competitions;
+the pipeline uses competition name and format to retain IPL and T20I while
+excluding non-IPL T20 competitions.
+
+## Getting started
+
+Use Python 3.13 as specified in the architecture document. Python 3.11–3.13
+are accepted by the current package metadata to support the provided
+development environment. After installing the project dependencies:
+
+```sh
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -e ".[dev]"
+python -m clutch_x.etl.validate_sources --data-dir "Data Pack"
+python -m clutch_x.etl.reconstruct_state --data-dir "Data Pack" --output-dir data/processed
+```
+
+Validation reports malformed inputs and broken relationships before
+processing. The state pipeline scopes to IPL/T20I, then excludes Super Over
+innings and abandoned/no-result matches with fewer than 30 legal deliveries in
+total. Original CSV files are read-only inputs and are not rewritten. It writes
+`data/processed/delivery_states.parquet`.
+
+## Source data contracts
+
+The loader preserves the source columns and adds normalized typed columns.
+Foreign-key joins are validated before the transformed delivery artifact is
+written.
+
+| File | Row grain and key | Relationships |
+|---|---|---|
+| `ball_by_ball.csv` | One delivery event; `(match_id, innings, innings_ball_num)` | `match_id` → matches |
+| `matches.csv` | One match; `match_id` | `comp_id` → competitions |
+| `competitions.csv` | One competition; `comp_id` | Format must be `T20` or `T20I` |
+| `playing_eleven.csv` | One player/batting-position record; `(match_id, team_id, player_id, batting_order)` | `match_id` → matches; batting order and some role flags may be blank |
+| `teams.csv` | One competition team; `(comp_id, team_id)` | `comp_id` → competitions |
+| `competition_team_player_mapping.csv` | One competition/team/player; `(comp_id, team_id, player_id)` | `comp_id` → competitions |
+
+Roster records may contain the same player at multiple batting positions,
+including across Super Overs, so player identity alone is not unique in that
+file. The delivery source uses `extras_type=wide` and `Overstep` for illegal
+balls; its `other` label also consistently carries a one-run penalty and is
+treated as a no-ball for legal-ball counts. Revised-overs fields are consumed
+as legal-ball limits (for example, `114` means 114 legal balls). The normal T20
+limit defaults to 120 legal balls.
+
+The [`prd.md`](prd.md), [`design.md`](design.md), and [`techStack.md`](techStack.md)
+documents define the product, visual system, and intended architecture.
+
+## Initial Pressure Index specification
+
+The current deterministic PI implementation computes the format/season par run
+rate as the mean first-innings run rate across matches. For a chase, it combines
+a nonlinear rate-tension score (`100 × clip(RRR / par_rate − 1, 0, 1)²`) at
+75% with the wicket/resource interaction (`wickets_lost / 9 ×
+(1 − balls_remaining / scheduled_balls)`) at 25%. First-innings pressure is
+the greater of the collapse score (70 at three early wickets, increasing with
+further wickets; 75 at five wickets before over 15) and death-over urgency
+(30 at over 16, increasing by 15 per over). Knockout pressure is multiplied by
+1.15, then clamped to 0–100. PI 60 is the high-pressure cutoff; 80 is the
+critical-leverage label.
+
+Run `python -m clutch_x.etl.score_pressure` after state reconstruction to
+produce `data/processed/pressure_deliveries.parquet`. With the supplied data,
+the initial specification classifies 16.99% of deliveries as high pressure,
+within the PRD's 15–25% target. Verify the acceptance gates with
+`python -m clutch_x.etl.validate_pressure`: the current data shows an 8.0%
+high-pressure wicket rate versus 4.88% in normal pressure (chi-square
+`p < 0.01`) and a statistically different run variance (Levene `p < 0.01`).
+
+Run `python -m clutch_x.etl.normalizer` to attach format/season/innings/phase
+expected runs and wicket probability. Sparse bucket estimates are shrunk toward
+the corresponding format/innings/phase mean using 30 prior deliveries.
+`python -m clutch_x.etl.baselines` and `python -m clutch_x.etl.score_batting`
+then create personal normal-pressure profiles, batter pressure deltas, and
+match-level impact audit rows. `python -m clutch_x.etl.score_bowling` generates
+bowling economy/dot deltas, pressure runs saved per over, credited wickets
+(with top-order wickets weighted 1.5× for impact), and match-level audit rows.
+`python -m clutch_x.etl.reliability_filter` applies the PRD's 150-ball/10-match
+eligibility floor, shrinks per-ball/over impact toward the eligible peer mean
+with a 150-ball prior, and penalizes match-to-match volatility as `mean −
+0.5 × sample_std`.
+
+`python -m clutch_x.etl.rank_players` exports the two Top-10 artifacts. The
+leaderboard first percentile-ranks each component within its eligible
+discipline cohort. Baseline ratings weight normal strike rate/economy at 60%,
+with boundary/dot/wicket rates making up the rest. Pressure ratings weight
+volatility-adjusted pRAE/pRSAE at 40%, baseline deltas at 25%, and the remaining
+pressure diagnostics at 35%. The final score is 55% pressure rating, 25% of the
+baseline-adjusted delta mapped to 0–100, and 20% positive-impact consistency.
+Ties break by pressure rating, net clutch delta, sample volume, then ascending
+player ID. All weights and tie-breakers are explicit and deterministic.
+
+Run `python -m clutch_x.etl.ranking_audit` to verify Top-10 rank integrity,
+summarize high-pressure exposure by competition and innings, and measure
+odd/even chronological match split-half Spearman stability for eligible
+players. The supplied data passes the Top-10 integrity checks, but split-half
+stability is below the PRD's 0.65 target: batting rho is 0.1985 (47 eligible
+players) and bowling rho is 0.3317 (68 eligible players). The audit exits
+unsuccessfully on this acceptance-gate miss and still writes the exposure
+artifacts. These rankings should therefore be treated as exploratory, not as
+validated stable rankings; the threshold has not been weakened to conceal the
+observed result.
+
+After generating the processed Parquet artifacts, run
+`python -m clutch_x.etl.build_store` to materialize them as DuckDB tables in
+`data/processed/clutch_x.duckdb`. The database includes an artifact catalog,
+store schema version, SHA-256/size manifests for the six input CSVs, and
+checksums for the ETL configuration modules used to produce the artifacts.
+
+The API query layer reads from DuckDB with parameterized competition, innings,
+stage, and over filters. Filtered leaderboards, comparisons, and scatter
+cohorts are recalculated through the same normalization, reliability, and
+ranking functions as the batch pipeline; pressure timelines aggregate the
+delivery table by over.
+
+Start the API with `python -m uvicorn clutch_x.api.main:app --host 127.0.0.1
+--port 8000`; set `CLUTCH_X_DB` to use a different DuckDB file. The versioned
+routes provide overview metadata, filter options, filtered Top-10 leaderboards,
+innings timelines, quadrant cohorts, up-to-three-player comparisons, and
+per-player match audit records. Invalid filters and ineligible player
+selections return explicit 422 responses; an unavailable database returns
+503.
+
+## Methodology report
+
+After building the verified Top-10, exposure, and ranking-audit artifacts,
+install the Typst CLI and run:
+
+```sh
+python -m clutch_x.report.build_report
+```
+
+The report builder validates both ordered Top-10 artifacts, computes the
+pressure-regime checks from normalized deliveries, and compiles
+`reports/clutch_x_methodology.pdf`. The matching `report-data.json` snapshot
+and compiled Typst source are emitted beside the PDF. The report includes the
+formulas and thresholds, PI distribution, pressure and stability audits,
+rankings, exposure summaries, artifact/source checksums, and explicit
+limitations. A missed stability target is preserved in the report rather than
+hidden or treated as a build failure.
+
+## Continuous integration
+
+GitHub Actions runs the Python tests, frontend production build and npm audit,
+then rebuilds the analytics artifacts from the six source CSVs and enforces
+the pressure and split-half statistical gates. The analytics job still builds
+the store and report when the ranking audit misses its gate, then returns the
+audit failure so the limitation remains visible in CI. A Docker image build
+also runs from the repository root.
+
+## Docker image
+
+The multi-stage Docker build installs the API and runs the deterministic ETL
+against `Data Pack/`, then copies only the generated DuckDB database into the
+runtime image. The source CSVs and intermediate Parquet files remain in the
+builder stage. Build and run the API with:
+
+```sh
+docker build -t clutch-x-api:local .
+docker run --rm -p 8000:8000 clutch-x-api:local
+```
+
+The container exposes FastAPI on port 8000 and uses
+`CLUTCH_X_DB=/data/clutch_x.duckdb`. Its ranking audit explicitly allows the
+known split-half stability miss so exploratory analytics remain available;
+the GitHub Actions analytics gate still fails that acceptance criterion.
+
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the selected Cloudflare Pages
+and Railway deployment configuration, release steps, and operational limits.
