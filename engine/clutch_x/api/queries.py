@@ -256,6 +256,32 @@ def query_quadrant_scatter(
     """Return cohort medians and all ranked players for the quadrant chart."""
     if discipline not in {"batting", "bowling"}:
         raise ValueError(f"Unsupported scatter discipline: {discipline}")
+    if (
+        filters.competition == "ALL"
+        and filters.innings is None
+        and filters.match_stage == "ALL"
+        and filters.over is None
+    ):
+        table_name = f"{discipline}_scatter_min_{filters.min_high_pressure_balls}"
+        try:
+            rankings = _execute_frame(
+                connection,
+                f'SELECT * FROM "{table_name}" ORDER BY rank',
+            )
+            return (
+                float(rankings.get_column("baseline_rating").median()),
+                float(rankings.get_column("pressure_rating").median()),
+                rankings.select(
+                    "rank",
+                    "player_id",
+                    "player_name",
+                    "baseline_rating",
+                    "pressure_rating",
+                    "net_clutch_delta",
+                ),
+            )
+        except duckdb.CatalogException:
+            pass
     scored = _score_filtered_cohorts(connection, filters)
     rankings = (
         scored.batting_rankings

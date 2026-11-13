@@ -8,6 +8,8 @@ import polars as pl
 from clutch_x.etl.leaderboards import (
     build_batting_top10,
     build_bowling_top10,
+    build_batting_rankings,
+    build_bowling_rankings,
 )
 
 RANKING_THRESHOLDS = (100, 150, 200, 250, 300)
@@ -30,6 +32,21 @@ def _write_threshold_rankings(
             )
         builder(filtered).write_parquet(
             output_dir / f"top10_{discipline}_min_{threshold}.parquet"
+        )
+
+
+def _write_threshold_scatter(
+    eligible: pl.DataFrame,
+    *,
+    volume_column: str,
+    builder,
+    output_dir: Path,
+    discipline: str,
+) -> None:
+    for threshold in RANKING_THRESHOLDS:
+        filtered = eligible.filter(pl.col(volume_column) >= threshold)
+        builder(filtered).write_parquet(
+            output_dir / f"{discipline}_scatter_min_{threshold}.parquet"
         )
 
 
@@ -56,6 +73,20 @@ def main() -> None:
         builder=build_bowling_top10,
         output_dir=args.input_dir,
         discipline="bowlers",
+    )
+    _write_threshold_scatter(
+        eligible_batters,
+        volume_column="high_pressure_balls_faced",
+        builder=build_batting_rankings,
+        output_dir=args.input_dir,
+        discipline="batting",
+    )
+    _write_threshold_scatter(
+        eligible_bowlers,
+        volume_column="high_pressure_legal_balls",
+        builder=build_bowling_rankings,
+        output_dir=args.input_dir,
+        discipline="bowling",
     )
     print("Top-10 pressure batters")
     print(batters.select("rank", "player_id", "player_name", "clutch_x_score"))
